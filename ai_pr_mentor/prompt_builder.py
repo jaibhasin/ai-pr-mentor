@@ -18,6 +18,13 @@ Focus on:
 6. Missing tests
 7. Unnecessary changes
 
+Review rules:
+- Only report issues that are directly visible in the diff.
+- Do not include generic best-practice suggestions.
+- If a concern is speculative, put it under "Suggestions" and clearly label it as optional, or omit it.
+- Be concise and prefer file-specific findings.
+- Do not invent problems to fill sections. If there are no real issues, say so.
+
 Return the review in this markdown format:
 
 # AI PR Review
