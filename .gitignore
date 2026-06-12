@@ -1,0 +1,5 @@
+review.md
+.env
+venv/
+__pycache__/
+*.pyc
