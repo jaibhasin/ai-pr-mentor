@@ -1,81 +1,46 @@
-diff --git a/ai_pr_mentor/prompt_builder.py b/ai_pr_mentor/prompt_builder.py
-index 49decd5..d0922e3 100644
---- a/ai_pr_mentor/prompt_builder.py
-+++ b/ai_pr_mentor/prompt_builder.py
-@@ -1 +1,43 @@
--# prompt_builder.py
-\ No newline at end of file
-+# prompt_builder.py
-+
-+
-+def build_review_prompt(diff_text: str) -> str:
-+    return f"""
-+You are an expert software engineer reviewing a Git pull request.
-+
-+Review the following git diff.
-+
-+Focus on:
-+1. Bugs
-+2. Logic issues
-+3. Security problems
-+4. Performance problems
-+5. Code readability
-+6. Missing tests
-+7. Unnecessary changes
-+
-+Return the review in this markdown format:
-+
-+# AI PR Review
-+
-+## Summary
-+Briefly explain what changed.
-+
-+## Issues Found
-+List real issues only. If no issues, say "No major issues found."
-+
-+## Suggestions
-+Give practical improvement suggestions.
-+
-+## Tests to Add
-+Suggest useful tests.
-+
-+## Risk Level
-+Choose one: Low, Medium, High.
-+
-+Here is the diff:
-+
-+```diff
-+{diff_text}
-+```
-+""".strip()
-diff --git a/tests/test_prompt_builder.py b/tests/test_prompt_builder.py
-new file mode 100644
-index 0000000..f3d2f65
---- /dev/null
-+++ b/tests/test_prompt_builder.py
-@@ -0,0 +1,25 @@
-+import unittest
-+
+diff --git a/ai_pr_mentor/cli.py b/ai_pr_mentor/cli.py
+index 4f0e961..233dd74 100644
+--- a/ai_pr_mentor/cli.py
++++ b/ai_pr_mentor/cli.py
+@@ -2,6 +2,8 @@
+ import typer
+ from rich.console import Console
+ from ai_pr_mentor.diff_reader import get_diff_stats, read_diff_file
++from ai_pr_mentor.llm_client import generate_review
 +from ai_pr_mentor.prompt_builder import build_review_prompt
+ 
+ app = typer.Typer()
+ console = Console()
+@@ -13,9 +15,9 @@ def main() -> None:
+ 
+ 
+ @app.command()
+-def review(diff_path: str):
++def stats(diff_path: str):
+     """
+-    Review a .diff file using AI.
++    Show per-file diff statistics.
+     """
+     diff_content = read_diff_file(diff_path)
+     diff_stats = get_diff_stats(diff_content)
+@@ -31,5 +33,20 @@ def review(diff_path: str):
+         )
+ 
+ 
++@app.command()
++def review(diff_path: str):
++    """
++    Review a .diff file using AI.
++    """
++    diff_content = read_diff_file(diff_path)
++    prompt = build_review_prompt(diff_content)
++
++    console.print("[bold blue]Sending diff to AI reviewer...[/bold blue]")
++
++    review_text = generate_review(prompt)
++
++    console.print(review_text)
 +
 +
-+class BuildReviewPromptTests(unittest.TestCase):
-+    def test_includes_diff_in_closed_diff_code_fence(self) -> None:
-+        diff_text = """\
-+diff --git a/app.py b/app.py
-+--- a/app.py
-++++ b/app.py
-+@@ -1 +1 @@
-+-old
-++new
-+"""
-+
-+        prompt = build_review_prompt(diff_text)
-+
-+        self.assertIn("```diff\n" + diff_text + "```", prompt)
-+        self.assertTrue(prompt.startswith("You are an expert software engineer"))
-+        self.assertTrue(prompt.endswith("```"))
-+
-+
-+if __name__ == "__main__":
-+    unittest.main()
+ if __name__ == "__main__":
+     app()

@@ -4,6 +4,7 @@ from rich.console import Console
 from ai_pr_mentor.diff_reader import get_diff_stats, read_diff_file
 from ai_pr_mentor.llm_client import generate_review
 from ai_pr_mentor.prompt_builder import build_review_prompt
+from ai_pr_mentor.review_writer import write_review_file
 
 app = typer.Typer()
 console = Console()
@@ -46,6 +47,7 @@ def review(diff_path: str):
     review_text = generate_review(prompt)
 
     console.print(review_text)
+    write_review_file(review_text)
 
 
 if __name__ == "__main__":
