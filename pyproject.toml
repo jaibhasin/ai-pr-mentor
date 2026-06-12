@@ -11,6 +11,5 @@ dependencies = [
     "google-genai"
 ]
 
-
 [project.scripts]
 ai-pr-mentor="ai_pr_mentor.cli:app"

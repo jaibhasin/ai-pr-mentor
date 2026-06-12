@@ -2,6 +2,8 @@
 
 
 def build_review_prompt(diff_text: str) -> str:
+    diff_text = diff_text.rstrip()
+
     return f"""
 You are an expert software engineer reviewing a Git pull request.
 
