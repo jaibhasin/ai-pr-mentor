@@ -7,6 +7,11 @@ app = typer.Typer()
 console = Console()
 
 
+@app.callback()
+def main() -> None:
+    """AI PR Mentor CLI."""
+
+
 @app.command()
 def review(diff_path: str):
     """

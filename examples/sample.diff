@@ -1,0 +1,13 @@
+diff --git a/ai_pr_mentor/cli.py b/ai_pr_mentor/cli.py
+index 56ea6e1..e937f8b 100644
+--- a/ai_pr_mentor/cli.py
++++ b/ai_pr_mentor/cli.py
+@@ -17,4 +17,5 @@ def review(diff_path: str):
+ 
+ 
+ if __name__ == "__main__":
+-    app()
+\ No newline at end of file
++    app()
++    
+\ No newline at end of file
