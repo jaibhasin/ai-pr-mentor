@@ -1,0 +1,16 @@
+[project]
+name="ai-pr-mentor"
+version = "0.1.0"
+description = "A CLI tool that reviews git diffs using an LLM"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "typer",
+    "rich",
+    "python-dotenv",
+    "google-genai"
+]
+
+
+[project.scripts]
+ai-pr-mentor="ai_pr_mentor.cli:app"
